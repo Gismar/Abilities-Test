@@ -7,5 +7,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  <ItemGroup>
+	<Using Remove="System.Net.Http" />
+	<Using Remove="System.Threading" />
+	<Using Remove="System.Threading.Tasks" />
+  </ItemGroup>
 </Project>
