@@ -1,0 +1,43 @@
+{
+	"Name": "Poke",
+	"Type": "AttackAbility",
+	"DataType": "AttackAbilityData",
+	"Data": [
+		{
+			"Level": 0,
+			"Damage": 25
+		},
+		{
+			"Level": 1,
+			"Damage": 50
+		},
+		{
+			"Level": 2,
+			"Damage": 75
+		},
+		{
+			"Level": 3,
+			"Damage": 100
+		},
+		{
+			"Level": 4,
+			"Damage": 125
+		},
+		{
+			"Level": 5,
+			"Damage": 150
+		},
+		{
+			"Level": 21,
+			"Damage": 200
+		},
+		{
+			"Level": 22,
+			"Damage": 250
+		},
+		{
+			"Level": 23,
+			"Damage": 300
+		}
+	]
+}

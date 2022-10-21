@@ -1,0 +1,84 @@
+{
+  "Name": "Defense Up",
+  "Type": "NonStackingBuff",
+  "DataType": "BuffData",
+  "Data": [
+    {
+      "Level": 0,
+      "BuffData": [
+        {
+          "Attribute": "Defense",
+          "Modifying": "Bonus",
+          "Value": 5,
+          "Duration": 3
+        }
+      ]
+    },
+    {
+      "Level": 1,
+      "BuffData": [
+        {
+          "Attribute": "Defense",
+          "Modifying": "Bonus",
+          "Value": 10,
+          "Duration": 4
+        }
+      ]
+    },
+    {
+      "Level": 2,
+      "BuffData": [
+        {
+          "Attribute": "Defense",
+          "Modifying": "Bonus",
+          "Value": 15,
+          "Duration": 5
+        }
+      ]
+    },
+    {
+      "Level": 3,
+      "BuffData": [
+        {
+          "Attribute": "Defense",
+          "Modifying": "Bonus",
+          "Value": 20,
+          "Duration": 6
+        }
+      ]
+    },
+    {
+      "Level": 21,
+      "BuffData": [
+        {
+          "Attribute": "Defense",
+          "Modifying": "Bonus",
+          "Value": 25,
+          "Duration": 7
+        }
+      ]
+    },
+    {
+      "Level": 22,
+      "BuffData": [
+        {
+          "Attribute": "Defense",
+          "Modifying": "Bonus",
+          "Value": 30,
+          "Duration": 8
+        }
+      ]
+    },
+    {
+      "Level": 23,
+      "BuffData": [
+        {
+          "Attribute": "Defense",
+          "Modifying": "Bonus",
+          "Value": 35,
+          "Duration": 9
+        }
+      ]
+    }
+  ]
+}

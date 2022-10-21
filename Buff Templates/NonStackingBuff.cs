@@ -6,7 +6,7 @@
 
         public BuffData Data { get; set; }
         public int TicksLeft { get; set; }
-        public IAbility<BuffAbilityData> Source { get; set; }
+        public Ability<BuffAbilityData> Source { get; set; }
 
         public void Remove(Character target)
         {

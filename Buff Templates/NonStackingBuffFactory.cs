@@ -11,9 +11,9 @@ namespace Abilities_Test
         /// Creates a buff with data
         /// </summary>
         /// <returns>False if it failed and null</returns>
-        public bool TryCreateBuff(TBuff old, BuffData data, Character target, out TBuff? buff)
+        public bool TryCreateBuff(TBuff old, BuffData data, out TBuff? buff)
         {
-            if (data == default || target == null)
+            if (data == default)
             {
                 buff = null;
                 return false;

@@ -1,83 +1,137 @@
 ﻿using Abilities_Test;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Attribute = Abilities_Test.Attribute;
+using Newtonsoft.Json.Linq;
 
-var character = new Character("Player", new() { [Attribute.Stat] = 250});
+string fileName = $"{AppDomain.CurrentDomain.BaseDirectory}\\Data\\Player.json";
+Character player = CreateCharacter(fileName, out var abilityFiles);
+foreach (KeyValuePair<string, int> ability in abilityFiles)
+    CreateAbility(player, ability.Key, ability.Value);
 
-CastSimpleBuff("Very Powerful Multiplying Stat Buff", 10, Attribute.Stat, Modifying.Multiplicative, -100, 11);
-CastSimpleBuff("Very Powerful Bonus Stat Buff", 10, Attribute.Stat, Modifying.Bonus, -100, 9);
-CastSimpleBuff("Very Powerful Base Stat Buff", 10, Attribute.Stat, Modifying.Base, -100, 7);
-CastSimpleBuff("Very Powerful Limiting Stat Buff", 10, Attribute.Stat, Modifying.Limiter, 999+1, 4);
+fileName = $"{AppDomain.CurrentDomain.BaseDirectory}\\Data\\Slime.json";
+Character enemy = CreateCharacter(fileName, out abilityFiles);
+foreach (KeyValuePair<string, int> ability in abilityFiles)
+    CreateAbility(enemy, ability.Key, ability.Value);
 
-Console.WriteLine($"\n{character.Name}'s Stat: {character.GetTotalAttribute(Attribute.Stat):n}");
-character.DisplayBuffs();
-character.TickBuffs();
-Console.WriteLine();
 
-CastComplexBuff("Super Very Powerful Multiplying Stat Buff", 43, Attribute.Stat, Modifying.Multiplicative, 1000, 5);
-
-void CastSimpleBuff(string name, int level, Attribute attribute, Modifying modifying, int strength, int duration)
+static Character CreateCharacter(string fileName, out Dictionary<string, int> abilities)
 {
-    var buffData = new BuffData(attribute, modifying, strength, duration);
-    bool result = BuffFactory<Buff>
-    .Instance
-    .TryCreateBuff(buffData, character, out Buff? temp);
+    Character player;
+    using StreamReader stream = new(fileName);
+    using JsonTextReader reader = new(stream);
+    JObject file = (JObject)JToken.ReadFrom(reader);
 
-    if (result)
+    //Set Attributes
+    Dictionary<Attribute, int> attributes = file["Attributes"]
+        .Children<JObject>()
+        .ToDictionary(
+            key => Enum.Parse<Attribute>(key.Properties().First().Name),
+            value => (int)value.Properties().First().Value
+        );
+
+    //Get abilities
+    abilities = new();
+    foreach (var array in file["Abilities"])
+        abilities.Add((string)array["FileUrl"], (int)array["Level"]);
+
+    player = new Character((string)file["Name"], attributes);
+
+    return player;
+}
+
+static void CreateAbility(Character character, string fileName, int level)
+{
+    using StreamReader stream = new($"{AppDomain.CurrentDomain.BaseDirectory}Data\\{fileName}");
+    using JsonTextReader reader = new(stream);
+    JObject file = (JObject)JToken.ReadFrom(reader);
+
+    string name = (string)file["Name"];
+    JToken data = file["Data"].First(d => (int)d["Level"] == level);
+
+    IAbility? ability;
+    switch ((string)file["Type"])
     {
-        var data = new BuffAbilityData(name, level, new IBuff<BuffData>[] { temp });
-        result = AbilityFactory<BuffAbility, BuffAbilityData>
-            .Instance
-            .TryCreateAbility(data, out BuffAbility? ability);
+        case "AttackAbility":
+            ability = Helper.CreateAttackAbility(level, name, data);
+            if (ability != null)
+                character.AddAbility(ability);
+            break;
 
-        if (result)
-        {
-            ability?.Cast(character);
-            ability?.Display();
-        }
+        case "Buff":
+            ability = Helper.CreateBuffAbility(level, name, data);
+            if (ability != null)
+                character.AddAbility(ability);
+            break;
+
+        case "NonStackingBuff":
+            ability = Helper.CreateNonStackingBuffAbility(level, name, data);
+            if (ability != null)
+                character.AddAbility(ability);
+            break;
     }
 }
 
-void CastComplexBuff(string name, int level, Attribute attribute, Modifying modifying, int strength, int duration)
+Random ran = new();
+while (player.CurrentHealth > 0 && enemy.CurrentHealth > 0)
 {
-    var buffData = new BuffData(attribute, modifying, strength, duration);
-    bool result = true;
-    IBuff<BuffData>[] buffs = new IBuff<BuffData>[10];
-    for (int i = 0; i < 10; i++)
+    switch (ran.Next(0, 4))
     {
-        result &= BuffFactory<Buff>
-        .Instance
-        .TryCreateBuff(buffData, character, out Buff? temp);
-        buffs[i] = temp;
+        case 0:
+            BBuffAAtt(player, enemy);
+            break;
+        case 1:
+            BAttAAtt(player, enemy);
+            break;
+        case 2:
+            BAttABuff(player, enemy);
+            break;
+        case 3:
+            BBuffABuff(player, enemy);
+            break;
     }
 
-    if (result)
-    {
-        var data = new BuffAbilityData(name, level, buffs);
-        result = AbilityFactory<BuffAbility, BuffAbilityData>
-            .Instance
-            .TryCreateAbility(data, out BuffAbility? ability);
-
-        if (result)
-        {
-            ability?.Cast(character);
-            ability?.Display();
-        }
-    }
-}
-
-
-Console.WriteLine($"\n{character.Name}'s Stat: {character.GetTotalAttribute(Attribute.Stat):n}");
-
-for (int i = 10; i >= 0; i--)
-{
-    Task.Delay(1000).Wait();
-
-    Console.WriteLine($"\n{character.Name}'s Stat: {character.GetTotalAttribute(Attribute.Stat):n}");
-    character.DisplayBuffs();
-    character.TickBuffs();
+    Console.ReadLine();
 }
 
 GC.Collect();
 
-Console.ReadLine();
+static void BBuffAAtt(Character a, Character b)
+{
+    b.Abilities[1].Cast(b);
+    a.Abilities[0].Cast(b);
+    Console.WriteLine($"{b.Name} HP: {b.CurrentHealth}\n" +
+        $"{a.Name} HP: {a.CurrentHealth}\n");
+    b.TickBuffs();
+    a.TickBuffs();
+}
+
+static void BAttAAtt(Character a, Character b)
+{
+    b.Abilities[0].Cast(a);
+    a.Abilities[0].Cast(b);
+    Console.WriteLine($"{b.Name} HP: {b.CurrentHealth}\n" +
+        $"{a.Name} HP: {a.CurrentHealth}\n");
+    b.TickBuffs();
+    a.TickBuffs();
+}
+
+static void BAttABuff(Character a, Character b)
+{
+    b.Abilities[0].Cast(a);
+    a.Abilities[1].Cast(a);
+    Console.WriteLine($"{b.Name} HP: {b.CurrentHealth}\n" +
+        $"{a.Name} HP: {a.CurrentHealth}\n");
+    b.TickBuffs();
+    a.TickBuffs();
+}
+
+static void BBuffABuff(Character a, Character b)
+{
+    b.Abilities[1].Cast(b);
+    a.Abilities[1].Cast(a);
+    Console.WriteLine($"{b.Name} HP: {b.CurrentHealth}\n" +
+        $"{a.Name} HP: {a.CurrentHealth}\n");
+    b.TickBuffs();
+    a.TickBuffs();
+}

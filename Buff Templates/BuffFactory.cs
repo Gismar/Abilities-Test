@@ -23,9 +23,9 @@ namespace Abilities_Test
         /// Creates a buff with data
         /// </summary>
         /// <returns>False if it failed and null</returns>
-        public bool TryCreateBuff(BuffData data, Character target, out TBuff? buff)
+        public bool TryCreateBuff(BuffData data, out TBuff? buff)
         {
-            if (data == default || target == null)
+            if (data == default)
             {
                 buff = null;
                 return false;
@@ -38,7 +38,7 @@ namespace Abilities_Test
 
     public interface IBuff<TData>
     {
-        public IAbility<BuffAbilityData> Source { get; set; }
+        public Ability<BuffAbilityData> Source { get; set; }
         public TData Data { get; set; }
         public int TicksLeft { get; set; }
         public bool Tick();

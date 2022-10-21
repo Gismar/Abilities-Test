@@ -1,0 +1,20 @@
+{
+	"Name": "Player",
+	"Attributes": [
+		{ "MaxHealth": 1000 },
+		{ "Stat": 10 },
+		{ "Damage": 5 },
+		{ "CritRate": 50 },
+		{ "Defense": 150 }
+	],
+	"Abilities": [
+		{
+			"FileUrl": "PokeData.json",
+			"Level": 0
+		},
+		{
+			"FileUrl": "PowerUp.json",
+			"Level": 3
+		}
+	]
+}

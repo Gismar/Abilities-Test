@@ -1,0 +1,126 @@
+{
+  "Name": "Power Up",
+  "Type": "Buff",
+  "DataType": "BuffData",
+  "Data": [
+    {
+      "Level": 0,
+      "BuffData": [
+        {
+          "Attribute": "Damage",
+          "Modifying": "Bonus",
+          "Value": 1,
+          "Duration": 3
+        },
+        {
+          "Attribute": "Stat",
+          "Modifying": "Bonus",
+          "Value": 2,
+          "Duration": 3
+        }
+      ]
+    },
+    {
+      "Level": 1,
+      "BuffData": [
+        {
+          "Attribute": "Damage",
+          "Modifying": "Bonus",
+          "Value": 2,
+          "Duration": 4
+        },
+        {
+          "Attribute": "Stat",
+          "Modifying": "Bonus",
+          "Value": 4,
+          "Duration": 4
+        }
+      ]
+    },
+    {
+      "Level": 2,
+      "BuffData": [
+        {
+          "Attribute": "Damage",
+          "Modifying": "Bonus",
+          "Value": 3,
+          "Duration": 5
+        },
+        {
+          "Attribute": "Stat",
+          "Modifying": "Bonus",
+          "Value": 6,
+          "Duration": 5
+        }
+      ]
+    },
+    {
+      "Level": 3,
+      "BuffData": [
+        {
+          "Attribute": "Damage",
+          "Modifying": "Bonus",
+          "Value": 4,
+          "Duration": 6
+        },
+        {
+          "Attribute": "Stat",
+          "Modifying": "Bonus",
+          "Value": 8,
+          "Duration": 6
+        }
+      ]
+    },
+    {
+      "Level": 21,
+      "BuffData": [
+        {
+          "Attribute": "Damage",
+          "Modifying": "Bonus",
+          "Value": 5,
+          "Duration": 7
+        },
+        {
+          "Attribute": "Stat",
+          "Modifying": "Bonus",
+          "Value": 10,
+          "Duration": 7
+        }
+      ]
+    },
+    {
+      "Level": 22,
+      "BuffData": [
+        {
+          "Attribute": "Damage",
+          "Modifying": "Bonus",
+          "Value": 6,
+          "Duration": 8
+        },
+        {
+          "Attribute": "Stat",
+          "Modifying": "Bonus",
+          "Value": 12,
+          "Duration": 8
+        }
+      ]
+    },
+    {
+      "Level": 23,
+      "BuffData": [
+        {
+          "Attribute": "Damage",
+          "Modifying": "Bonus",
+          "Value": 7,
+          "Duration": 9
+        },
+        {
+          "Attribute": "Stat",
+          "Modifying": "Bonus",
+          "Value": 14,
+          "Duration": 9
+        }
+      ]
+    }
+  ]
+}
